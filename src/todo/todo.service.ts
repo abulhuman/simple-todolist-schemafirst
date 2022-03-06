@@ -20,6 +20,7 @@ export class TodoService {
       updated_at: undefined,
       status: TodoStatus.PENDING
     }
+    todos.push(newTodo)
     return newTodo
   }
 
