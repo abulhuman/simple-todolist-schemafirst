@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common'
-import { Todo, todos, TodoStatus } from 'src/data'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put
+} from '@nestjs/common'
+import { Todo, TodoStatus } from 'src/data'
 import { TodoService } from './todo.service'
 
 @Controller('todo')
@@ -24,5 +33,10 @@ export class TodoController {
     @Body() body: { title: string; status: TodoStatus }
   ): Todo {
     return this.todoService.updateTodo({ id, ...body })
+  }
+  @Delete(':id')
+  @HttpCode(204)
+  deleteTodo(@Param('id') id: string): void {
+    return this.todoService.deleteTodo(id)
   }
 }
