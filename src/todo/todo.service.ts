@@ -1,58 +1,52 @@
 import { Injectable } from '@nestjs/common'
-import { v4 as uuid } from 'uuid'
-import { todos, Todo, TodoStatus } from '../data'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { GetTodoArgs } from './dto/args/get-todo.args'
+import { CreateTodoInput } from './dto/input/create-todo.input'
+import { DeleteTodoInput } from './dto/input/delete-todo.input'
+import { UpdateTodoInput } from './dto/input/update-todo.input'
+import { Todo } from './entities/todo.entity'
 
 @Injectable()
 export class TodoService {
-  getAllTodos(): Todo[] {
-    return todos
+  constructor(
+    @InjectRepository(Todo) private todoRepository: Repository<Todo>
+  ) {}
+  getAllTodos() {
+    return this.todoRepository.find({
+      relations: ['owner']
+    })
   }
 
-  getTodoById(id: string): Todo {
-    return todos.find((todo) => todo.id === id)
+  async findOne({ id }: GetTodoArgs) {
+    return await this.todoRepository.findOneOrFail(id, {
+      relations: ['owner']
+    })
   }
 
-  createTodo({ title }: { title: string }): Todo {
-    const newTodo = {
-      id: uuid(),
-      title,
-      created_at: new Date(),
-      updated_at: undefined,
-      status: TodoStatus.PENDING
-    }
-    todos.push(newTodo)
-    return newTodo
+  createTodo(createTodoInput: CreateTodoInput) {
+    const newTodo = this.todoRepository.create(createTodoInput)
+    return this.todoRepository.save(newTodo)
   }
 
-  updateTodo({
-    id,
-    title,
-    status
-  }: {
-    id: string
-    title: string
-    status: TodoStatus
-  }): Todo {
-    const todoToUpdate = this.getTodoById(id)
+  async updateTodo({ id, title, status }: UpdateTodoInput) {
+    let todoToUpdate = await this.findOne({ id })
     if (!todoToUpdate) return
 
-    const todoIndex = todos.findIndex((todo) => todo.id === id)
-
-    todos[todoIndex] = {
-      ...todos[todoIndex],
+    todoToUpdate = {
+      ...todoToUpdate,
       title,
       status,
       updated_at: new Date()
     }
 
-    return todos[todoIndex]
+    return this.todoRepository.save(todoToUpdate)
   }
 
-  deleteTodo(id: string): void {
-    const todoIndex = todos.findIndex((todo) => todo.id === id)
+  async deleteTodo({ id }: DeleteTodoInput) {
+    const todoToDelete = await this.findOne({ id })
 
-    if (todoIndex === -1) return
-    todos.splice(todoIndex, 1)
-    return
+    if (!todoToDelete) return
+    return this.todoRepository.remove(todoToDelete)
   }
 }

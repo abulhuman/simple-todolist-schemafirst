@@ -1,0 +1,40 @@
+type Account {
+  id: ID!
+  created_at: Date!
+  updated_at: Date
+  email: String!
+  password: String
+  ownerId: String!
+  owner: User!
+}
+
+input CreateAccountInput {
+  email: String!
+  password: String!
+  ownerId: String!
+}
+
+input UpdateAccountInput {
+  id: String!
+  email: String
+  password: String
+}
+
+input SigninInput {
+  email: String!
+  password: String!
+}
+
+type Query {
+  getAllAccounts: [Account]!
+  getAccountById(id: String!): Account
+}
+
+type Mutation {
+  createAccount(createAccountInput: CreateAccountInput!): Account!
+  updateAccount(updateAccountInput: UpdateAccountInput!): Account!
+  removeAccount(id: String!): Account
+  signup(createAccountInput: CreateAccountInput!): Account!
+  signin(signinInput: SigninInput!): Account!
+  signout: Boolean!
+}

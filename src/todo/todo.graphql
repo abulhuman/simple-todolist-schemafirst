@@ -1,0 +1,36 @@
+enum TodoStatus {
+  PENDING
+  DONE
+}
+
+type Todo {
+  id: ID!
+  created_at: Date!
+  updated_at: Date
+  title: String!
+  status: TodoStatus!
+  ownerId: String
+  owner: User!
+}
+
+input CreateTodoInput {
+  title: String!
+  ownerId: ID!
+}
+
+input UpdateTodoInput {
+  id: ID!
+  title: String
+  status: TodoStatus
+}
+
+type Query {
+  getAllTodos: [Todo]!
+  getTodoById(id: ID!): Todo
+}
+
+type Mutation {
+  createTodo(createTodoInput: CreateTodoInput!): Todo!
+  updateTodo(updateTodoInput: UpdateTodoInput!): Todo!
+  removeTodo(id: ID!): Todo
+}

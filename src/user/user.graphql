@@ -1,0 +1,34 @@
+type User {
+  id: ID!
+  created_at: Date!
+  updated_at: Date
+  fisrtName: String!
+  middleName: String!
+  lastName: String!
+  todos: [Todo]!
+  accounts: [Account]!
+}
+
+input CreateUserInput {
+  fisrtName: String!
+  middleName: String!
+  lastName: String!
+}
+
+input UpdateUserInput {
+  id: ID!
+  fisrtName: String
+  middleName: String
+  lastName: String
+}
+
+type Query {
+  getAllUsers: [User]!
+  getUserById(id: ID!): User
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: ID!): User
+}
