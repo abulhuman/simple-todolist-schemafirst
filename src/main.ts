@@ -32,6 +32,6 @@ async function bootstrap() {
       }).connect(sessionRepository)
     })
   )
-  await app.listen(5501)
+  await app.listen(configService.get('PORT') || 5501)
 }
 bootstrap()
