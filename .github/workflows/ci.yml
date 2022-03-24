@@ -10,7 +10,7 @@ on:
 
 jobs:
   ci:
-    name: ci
+    name: Clean Install
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: npm ci --prefer-offline --no-audit
 
-      - name: Setup Environment Variables
+      - name: Setup Environment Variables 🌴
         run: |
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" > .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
@@ -48,16 +48,30 @@ jobs:
 
       - name: Run formatter (prettier) 🦋🔮
         run: npm run format
-  
-#   deploy:
-#     name: deploy
-#     needs: ci
     
-#     runs-on: ${{ matrix.os }}
-#     strategy:
-#       matrix:
-#         os: [ubuntu-latest]
-#         node: [14]
-#     steps:
-#       - name: Run NestJS 😻
-#         run: npm run start:prod
+    build:
+      name: Build
+      needs: ci
+      
+      runs-on: ${{ matrix.os }}
+      
+      strategy:
+        matrix:
+          os: [ubuntu-latest]
+          node: [14] 
+      setps:
+        - name: Run build 🏗️
+          run: npm run build
+    
+    deploy:
+      name: deploy
+      needs: build
+      
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [ubuntu-latest]
+          node: [14]
+      steps:
+        - name: Run NestJS 😻
+          run: npm run start:prod
