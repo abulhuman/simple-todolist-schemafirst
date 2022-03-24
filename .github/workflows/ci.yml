@@ -62,6 +62,11 @@ jobs:
         os: [ubuntu-latest]
         node: [14] 
     steps:
+      - name: Debug Build 🧑‍🔧 -> pwd
+        run: pwd
+      - name: Debug Build 🧑‍🔧 -> ls
+        run: ls -la
+          
       - name: Run build 🏗️
         run: npm run build
     
