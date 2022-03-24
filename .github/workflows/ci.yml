@@ -35,15 +35,15 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Install dependencies 👨🏻‍💻
-        run: npm ci --prefer-offline --no-audit
-
       - name: Setup Environment Variables 🌴
         run: |
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" > .env
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
 
       - name: Run linter 👀
         run: npm run lint
@@ -59,15 +59,5 @@ jobs:
       - name: Run build 🏗️
         run: npm run build
     
-  deploy:
-    name: deploy
-    needs: ci-build
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14]
-    steps:
-      - name: Run NestJS 😻
+      - name: Run NestJS 😻🚀
         run: npm run start:prod
