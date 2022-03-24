@@ -41,6 +41,8 @@ jobs:
       - name: Setup Environment Variables 🌴
         run: |
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" > .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
 
       - name: Run linter 👀
