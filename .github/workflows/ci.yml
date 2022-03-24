@@ -10,6 +10,7 @@ on:
 
 jobs:
   ci:
+    name: ci
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -49,7 +50,14 @@ jobs:
         run: npm run format
   
   deploy:
+    name: deploy
+    needs: ci
+    
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
     steps:
-      needs: ci
       - name: Run NestJS 😻
         run: npm run start:prod
