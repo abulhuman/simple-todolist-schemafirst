@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  ci:
-    name: Clean Install
+  ci-build:
+    name: Clean Install and Build
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -51,36 +51,9 @@ jobs:
       - name: Run formatter (prettier) 🦋🔮
         run: npm run format
     
-  build:
-    name: Build
-    needs: ci
-
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14] 
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@master
-
-      - name: Setup node env 🏗
-        uses: actions/setup-node@v2.1.5
-        with:
-          node-version: ${{ matrix.node }}
-          check-latest: true
-
-      - name: Cache node_modules 📦
-        uses: actions/cache@v2.1.4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Debug Build 🧑‍🔧 -> pwd
+      - name: Debugging Build 🧑‍🔧 -> pwd
         run: pwd
-      - name: Debug Build 🧑‍🔧 -> ls
+      - name: Debugging Build 🧑‍🔧 -> ls
         run: ls -la
           
       - name: Run build 🏗️
@@ -88,7 +61,7 @@ jobs:
     
   deploy:
     name: deploy
-    needs: build
+    needs: ci-build
 
     runs-on: ${{ matrix.os }}
     strategy:
