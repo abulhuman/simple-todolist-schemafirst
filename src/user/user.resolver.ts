@@ -26,7 +26,6 @@ export class UserResolver {
   @Query('getAllUsers')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   findAll(@GetAccount() _account: Account) {
-
     return this.userService.findAll()
   }
 
