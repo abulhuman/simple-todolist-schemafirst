@@ -16,13 +16,16 @@ import { TypeOrmModule } from '@nestjs/typeorm'
           __dirname + './../session/entities/session.entity.ts'
         ],
         synchronize: true,
-        autoLoadEntities: false
+        autoLoadEntities: false,
         // , remote heroku database
-        // extra: {
-        //   ssl: {
-        //     rejectUnauthorized: false
-        //   }
-        // }
+        extra:
+          configService.get('NODE_ENV') === 'production'
+            ? {
+                ssl: {
+                  rejectUnauthorized: false
+                }
+              }
+            : undefined
       }),
       inject: [ConfigService]
     })
