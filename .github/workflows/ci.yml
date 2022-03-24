@@ -49,15 +49,15 @@ jobs:
       - name: Run formatter (prettier) 🦋🔮
         run: npm run format
   
-  deploy:
-    name: deploy
-    needs: ci
+#   deploy:
+#     name: deploy
+#     needs: ci
     
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14]
-    steps:
-      - name: Run NestJS 😻
-        run: npm run start:prod
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         os: [ubuntu-latest]
+#         node: [14]
+#     steps:
+#       - name: Run NestJS 😻
+#         run: npm run start:prod
