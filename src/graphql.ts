@@ -54,6 +54,7 @@ export interface UpdateUserInput {
 }
 
 export interface Account {
+    __typename?: 'Account';
     id: string;
     created_at: Date;
     updated_at?: Nullable<Date>;
@@ -64,6 +65,7 @@ export interface Account {
 }
 
 export interface IQuery {
+    __typename?: 'IQuery';
     getAllAccounts(): Nullable<Account>[] | Promise<Nullable<Account>[]>;
     getAccountById(id: string): Nullable<Account> | Promise<Nullable<Account>>;
     getAllTodos(): Nullable<Todo>[] | Promise<Nullable<Todo>[]>;
@@ -73,6 +75,7 @@ export interface IQuery {
 }
 
 export interface IMutation {
+    __typename?: 'IMutation';
     createAccount(createAccountInput: CreateAccountInput): Account | Promise<Account>;
     updateAccount(updateAccountInput: UpdateAccountInput): Account | Promise<Account>;
     removeAccount(id: string): Nullable<Account> | Promise<Nullable<Account>>;
@@ -88,6 +91,7 @@ export interface IMutation {
 }
 
 export interface Todo {
+    __typename?: 'Todo';
     id: string;
     created_at: Date;
     updated_at?: Nullable<Date>;
@@ -98,6 +102,7 @@ export interface Todo {
 }
 
 export interface User {
+    __typename?: 'User';
     id: string;
     created_at: Date;
     updated_at?: Nullable<Date>;

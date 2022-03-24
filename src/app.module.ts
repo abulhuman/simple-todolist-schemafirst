@@ -22,7 +22,9 @@ import { Session } from './session/entities/session.entity'
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       definitions: {
-        path: join(process.cwd(), 'src/graphql.ts')
+        path: join(process.cwd(), 'src/graphql.ts'),
+        emitTypenameField: true,
+        outputAs: 'interface'
       }
     }),
     ConfigModule.forRoot(),
